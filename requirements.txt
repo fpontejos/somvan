@@ -1,0 +1,18 @@
+scikit-learn
+scikit-image
+numpy
+pandas
+matplotlib
+seaborn
+tqdm
+flask
+bokeh==3.2.1
+minisom==2.3.1
+# torch 
+# torchvision
+gensim
+sentence-transformers
+nltk
+pygraphviz
+colorcet
+bertopic

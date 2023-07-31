@@ -372,24 +372,24 @@ def make_plot_topoverlay(plot, vec_df, m, n, topic_labels, main_source, cds_dict
 
     )
 
-    to_select = Select(value='x', 
+    to_dropdown = Select(value='x', 
                     options = [("x", "Select Topic")] + topic_input_label, 
                     visible=False,
                     max_width=200,
                     sizing_mode='stretch_width',
                     styles=dict({'min-width':'120px'}),
-                    name='to_select'
+                    name='to_dropdown'
                     )
                     
 
-    to_select.js_on_change("value", 
+    to_dropdown.js_on_change("value", 
                                 CustomJS(args=dict( to_src = to_source,
                                                     to_view = t0_view,
                                                     to_index = IndexFilter(indices=[])
                                                     ), 
                                         code=cb['topic_dropdown']))
 
-    return plot, to_bg_hex, to_pct_hex, to_select
+    return plot, to_bg_hex, to_pct_hex, to_dropdown
 
 
 def make_recency_plot(plot, m,n, main_source, cds_dict):
@@ -474,7 +474,7 @@ def make_query_hex(plot, m, n, x2, y2):
     
     return plot, highlight_src, highlight_hex
 
-def make_plots(vec_df, som, json_path, hc, hb, ht, cb):
+def make_plots(vec_df, som, json_path, help_, cb):
 
     plot, colorbar_plot = init_plot()
 
@@ -497,7 +497,7 @@ def make_plots(vec_df, som, json_path, hc, hb, ht, cb):
 
 
 
-    plot, to_bg_hex, to_pct_hex, to_select = make_plot_topoverlay(plot, vec_df, m, n, 
+    plot, to_bg_hex, to_pct_hex, to_dropdown = make_plot_topoverlay(plot, vec_df, m, n, 
                                                 topic_labels, 
                                                 main_source, cds_dict, cb)
     
@@ -556,20 +556,36 @@ def make_plots(vec_df, som, json_path, hc, hb, ht, cb):
                                 w_switch=wedge_toggle_switch,
                                 tb=to_bg_hex,
                                 to=to_pct_hex,
-                                ts=to_select,
+                                ts=to_dropdown,
                                 rc=recency_hex,
                                 rc_cb=rc_colorbar,
-                                hc=hc,
-                                hb=hb,
-                                ht=ht
+                                hc=help_['contents'],
+                                hb=help_['body'],
+                                ht=help_['title']
                             ),
                     code=cb['hex_dropdown']
             )
         )
 
 
+    plots_ = {'plot': plot, 'colorbar_plot': colorbar_plot}
+    switches_ = {
+        'hex_toggle_switch': hex_toggle_switch,
+        'wedge_toggle_switch': wedge_toggle_switch
+    }
 
-    return plot, colorbar_plot, main_source, hex_dropdown, hex_toggle_switch, wedge_toggle_switch, to_select, codebook_long, highlight_src, highlight_hex
+    dropdowns_ = {
+        'hex_dropdown': hex_dropdown,
+        'to_dropdown': to_dropdown
+    }
+
+    highlights_ = {
+        'highlight_src': highlight_src, 
+        'highlight_hex': highlight_hex
+    }
+
+
+    return plots_, main_source, codebook_long, dropdowns_, switches_, highlights_
 
 
 

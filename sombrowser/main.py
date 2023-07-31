@@ -159,7 +159,15 @@ meta_df = get_meta()
 
 json_path_ = [ROOT_PATH] + DASH_CONFIG['data']['topics'].split("/")
 json_path = os.path.join(*json_path_)
-plot, colorbar_plot, main_source, hex_dropdown, hits_switch, wedge_toggle_switch, to_select, codebook_long, highlight_src, highlight_hex = make_plots(meta_df, som, json_path, HELP_CONTENTS, help_body, help_title, CALLBACKS)
+
+help_ = {
+    'contents': HELP_CONTENTS,
+    'body': help_body,
+    'title': help_title
+}
+
+
+plots_, main_source, codebook_long, dropdowns_, switches_, highlights_ = make_plots(meta_df, som, json_path, help_, CALLBACKS)
 
 
 
@@ -253,13 +261,13 @@ def calculate_query(event):
         highlight_rank[topnn[i]] = np.max([rank_alpha[i],0.4])
 
     
-    highlight_src.data['rank'] = highlight_rank
-    highlight_hex.view = CDSView(filter=IndexFilter(indices=topnn))
+    highlights_['highlight_src'].data['rank'] = highlight_rank
+    highlights_['highlight_hex'].view = CDSView(filter=IndexFilter(indices=topnn))
     return
 
 def clear_query(event):
     query_input.value = ""
-    highlight_hex.view = CDSView(filter=IndexFilter(indices=[]))
+    highlights_['highlight_hex'].view = CDSView(filter=IndexFilter(indices=[]))
 
 button_styles = Styles(flex="1 0 auto")
 run_query_button =Button(label="Run Query", button_type="success", styles=button_styles)
@@ -321,25 +329,20 @@ select_options = column(
         name="select_options"
         )
 
-curdoc().add_root(select_options) # works
-curdoc().add_root(footer_input) # works
-curdoc().add_root(help_col) # works
-curdoc().add_root(hex_dropdown)
+curdoc().add_root(select_options)
+curdoc().add_root(footer_input)
+curdoc().add_root(help_col) 
+curdoc().add_root(dropdowns_['hex_dropdown'])
 
-curdoc().add_root(row(hits_switch, name="hits_switch"))
-curdoc().add_root(wedge_toggle_switch)
+curdoc().add_root(row(switches_['hex_toggle_switch'], name="hits_switch"))
+curdoc().add_root(switches_['wedge_toggle_switch'])
 
-# curdoc().add_root(row(
-#     plot, 
-#     colorbar_plot,
-#     name="plotcolorbar")) # works 
 
-# curdoc().add_root()
 
-curdoc().add_root(to_select) # works
-curdoc().add_root(plot) #works
-curdoc().add_root(colorbar_plot) 
-curdoc().add_root(details_tab_layout)  #works
+curdoc().add_root(dropdowns_['to_dropdown']) 
+curdoc().add_root(plots_['plot']) 
+curdoc().add_root(plots_['colorbar_plot']) 
+curdoc().add_root(details_tab_layout)  
 
 
 

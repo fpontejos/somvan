@@ -6,6 +6,7 @@ data/
 sombrowser/data/
 sombrowser/test/
 
+_ignore/
 ### Python 
 ### https://github.com/github/gitignore/blob/main/Python.gitignore
 

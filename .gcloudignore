@@ -1,0 +1,17 @@
+/___DELETE/
+*__DEL*
+*notebooks*
+*reference*
+/notebooks/
+/notebooks_archive/
+/notebooks_original/
+/training_models/
+*.ipynb_checkpoints*
+.git
+.gitignore
+/data/
+*news_vectors.csv
+_ignore/
+
+*.ipynb
+/sombrowser/test/

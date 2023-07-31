@@ -4,7 +4,7 @@
 Interactive SOM
 {% endblock %}
 {% block preamble %}
-<link href="/static/styles.css" rel="stylesheet">
+<!-- <link href="/static/styles.css" rel="stylesheet"> -->
 {% endblock %}
 {% block postamble %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -74,6 +74,8 @@ Interactive SOM
         margin-top:.5em;
     }
 
+
+
     
     .main_wrapper, .footer_wrapper{
         display: flex;
@@ -87,6 +89,14 @@ Interactive SOM
 
     .main_item, .footer_item{
         flex: 1 0 auto;
+    }
+
+    .footer_item.help_text_wrapper {
+        /* border: 1px solid red; */
+        /* flex: 2 0 auto; */
+    }
+    .help_body > p {
+        margin-bottom:.5em !important;
     }
     .colorbar_plot {
         margin: 0 2em;
@@ -127,7 +137,7 @@ Interactive SOM
             {{embed(roots.hits_switch)}}
             {{embed(roots.wedge_toggle_switch)}}
         </div>
-        <div class="footer_item">
+        <div class="footer_item help_text_wrapper">
             {{embed(roots.help_text) }}
         </div>        
 

@@ -135,11 +135,27 @@ som = get_pickled_som()
 
 # vec_df = get_vectors(som)
 
+help_body = Div(name="help_body", width=PLOT_WIDTH, width_policy='fixed', css_classes=["help_body"],
+text= "<p style='margin-bottom:1em'>" + "</p><p style='margin-bottom:1em'>".join([h for h in  HELP_CONTENTS['um']['body']]) + "</p>"
+)
+
+help_title = Div(
+text="<h3 style='margin-top:0px'>" + HELP_CONTENTS['um']['title'] + "</h3>"
+)
+
+help_col = column(
+        help_title,
+        help_body,
+        name="help_text"
+        )
+
+
+
 meta_df = get_meta()
 
 json_path_ = [ROOT_PATH] + DASH_CONFIG['data']['topics'].split("/")
 json_path = os.path.join(*json_path_)
-plot, colorbar_plot, main_source, hex_select, hits_switch, wedge_toggle_switch, to_select, codebook_long, highlight_src, highlight_hex = make_plots(meta_df, som, json_path)
+plot, colorbar_plot, main_source, hex_select, hits_switch, wedge_toggle_switch, to_select, codebook_long, highlight_src, highlight_hex = make_plots(meta_df, som, json_path, HELP_CONTENTS, help_body, help_title)
 
 
 
@@ -300,15 +316,9 @@ select_options = column(
         name="select_options"
         )
 
-help_text = column(
-        Div(text="""<h3 style="margin-top:0px">(Text Description)</h3>"""),
-        name="help_text"
-        )
-
-
 curdoc().add_root(select_options) # works
 curdoc().add_root(footer_input) # works
-curdoc().add_root(help_text) # works
+curdoc().add_root(help_col) # works
 curdoc().add_root(hex_select)
 
 curdoc().add_root(row(hits_switch, name="hits_switch"))

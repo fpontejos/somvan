@@ -13,5 +13,6 @@
 *news_vectors.csv
 _ignore/
 
+docs/videos/
 *.ipynb
 /sombrowser/test/

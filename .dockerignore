@@ -17,3 +17,4 @@ notebooks_original
 *.ipynb
 /sombrowser/test/
 _ignore/
+docs/videos/

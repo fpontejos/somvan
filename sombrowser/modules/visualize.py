@@ -20,6 +20,8 @@ from bokeh.models import Div, Button, Select, TextInput
 from bokeh.palettes import interp_palette
 from bokeh.plotting import figure
 from bokeh.transform import factor_cmap, factor_mark
+from bokeh.models import ColumnDataSource, CDSView, CustomJS, Styles
+from bokeh.events import ButtonClick
 
 
 from modules.constants import *
@@ -787,3 +789,66 @@ def make_bars(vec_df, filter_col='user'):
     bar_plot.max_width=PLOT_WIDTH
 
     return bars, bar_plot, bar_view, bar_index, bar_source
+
+
+
+
+def get_query_buttons(transformer, codebook_tree, highlights_, m, n):
+
+    def calculate_query(event):
+
+        topnn = codebook_tree.query(transformer.encode(query_input.value), TOPNN_K)[1].tolist()
+        highlight_rank = np.zeros(m*n) #+ .5
+        
+        rank_alpha = (np.arange(TOPNN_K,0,-1)+1)/(1+TOPNN_K)
+        for i in range(TOPNN_K):
+            highlight_rank[topnn[i]] = np.max([rank_alpha[i],0.4])
+
+        
+        highlights_['highlight_src'].data['rank'] = highlight_rank
+        highlights_['highlight_hex'].view = CDSView(filter=IndexFilter(indices=topnn))
+        return
+
+    def clear_query(event):
+        query_input.value = ""
+        highlights_['highlight_hex'].view = CDSView(filter=IndexFilter(indices=[]))
+
+
+    run_query_button =Button(label="Run Query", button_type="success", styles=Styles(**BUTTON_STYLES))
+    clear_query_button =Button(label="Clear Query", styles=Styles(**BUTTON_STYLES))
+
+
+    run_query_button.on_event(ButtonClick, calculate_query)
+    clear_query_button.on_event(ButtonClick, clear_query)
+
+    query_input = TextInput(placeholder='Search Query', width=200)
+
+
+    return run_query_button, clear_query_button, query_input
+
+
+def get_help(hc, ht):
+
+    help_body = Div(name="help_body", 
+                    width=PLOT_WIDTH, 
+                    width_policy='fixed', 
+                    css_classes=["help_body"],
+                    text=hc
+    )
+
+    help_title = Div(text=ht)
+
+
+    help_col = column(
+            help_title,
+            help_body,
+            name="help_text"
+            )
+
+    help_ = {
+        'contents': hc,
+        'body': help_body,
+        'title': help_title
+    }
+
+    return help_, help_col

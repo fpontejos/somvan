@@ -9,6 +9,57 @@ SOM_SCALING = "mean"
 CONTRAST_COLOR1 = "#ff6361"
 CONTRAST_COLOR2 = "#bc5090"
 
+TOPNN_K = 10
+BUTTON_STYLES = dict(flex="1 0 auto")
+
+
+DASH_CONFIG = {
+
+    'data': {
+        'meta_csv': 'data/csv/news_meta_tb.csv',
+        'topics': 'data/news_topic_labels.json',
+        'som':'data/models/som/news_som.p',
+        'vectorizer': 'data/models/all-MiniLM-L6-v2',
+
+    },
+    'hexagons': {
+        'umatrix': {
+            'palette': 'Viridis256'
+        },
+        'hits': {
+            'show': True,
+            'color': '#FFFFFF'
+        },
+        'qe': {
+            'show': True,
+            'palette': 'Magma256'
+        },
+        'highlight': {
+            'show': True,
+            'column': 'user',
+            'palette': 'Viridis256'
+        },
+    },
+    'details': {
+        'table': {
+            'show': True,
+            'table_cols_attrs' : {
+                'meta.title': {'width': 300},
+                'meta.topic': {'width': 40},
+                'Topic': {'width': 40},
+                'topic_name': {'width': 80},
+            },
+            'meta_cols': ['content', 
+                            'Topic',
+                            'topic_name',
+                            'meta.topic', 
+                            'meta.title', 
+                            'meta.link', 
+                            'bmu']
+
+        }
+    }
+}
 
 HELP_CONTENTS = {
     'um': {
@@ -34,6 +85,15 @@ HELP_CONTENTS = {
         "Red nodes are on average more recent than blue nodes."]
     }
 }
+
+
+HELP_BODY_CONTENTS = "<p style='margin-bottom:1em'>" + \
+    "</p><p style='margin-bottom:1em'>".join([h for h in  HELP_CONTENTS['um']['body']]) + \
+    "</p>"
+
+HELP_BODY_TITLE = "<h3 style='margin-top:0px'>" + \
+    HELP_CONTENTS['um']['title'] + \
+    "</h3>"
 
 def _embed_js_contents(p, filename):
     js_path = os.path.join(p, 'modules', 'js', filename)

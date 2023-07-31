@@ -319,7 +319,7 @@ def make_plot_topics(plot, main_source, json_path, m, n, p):
 
     return plot, bg_hex, bg_wedge, topic_labels, wedge_switch
 
-def make_plot_topoverlay(plot, vec_df, m, n, topic_labels, main_source, cds_dict):
+def make_plot_topoverlay(plot, vec_df, m, n, topic_labels, main_source, cds_dict, cb):
 
     wsize = (PLOT_WIDTH/(m+1))/(np.sqrt(3)/2)
     hsize = PLOT_HEIGHT/((0.75*n)+0.25)
@@ -387,24 +387,7 @@ def make_plot_topoverlay(plot, vec_df, m, n, topic_labels, main_source, cds_dict
                                                     to_view = t0_view,
                                                     to_index = IndexFilter(indices=[])
                                                     ), 
-                                        code="""
-    var selected_topic = cb_obj.value
-
-    var show_indices = []
-
-    for (var i = 0; i<to_src.get_length(); i++){
-        if (to_src.data.Topic[i]==selected_topic) {
-            show_indices.push(to_src.data.index[i])
-        }
-    }
-
-    var idx = [...new Set(show_indices)]
-    to_index.indices = idx
-
-    to_view.filter = to_index
-    to_src.change.emit()
-
-    """))
+                                        code=cb['topic_dropdown']))
 
     return plot, to_bg_hex, to_pct_hex, to_select
 
@@ -491,7 +474,7 @@ def make_query_hex(plot, m, n, x2, y2):
     
     return plot, highlight_src, highlight_hex
 
-def make_plots(vec_df, som, json_path, hc, hb, ht):
+def make_plots(vec_df, som, json_path, hc, hb, ht, cb):
 
     plot, colorbar_plot = init_plot()
 
@@ -516,8 +499,9 @@ def make_plots(vec_df, som, json_path, hc, hb, ht):
 
     plot, to_bg_hex, to_pct_hex, to_select = make_plot_topoverlay(plot, vec_df, m, n, 
                                                 topic_labels, 
-                                                main_source, cds_dict)
+                                                main_source, cds_dict, cb)
     
+
 
 
 
@@ -548,7 +532,7 @@ def make_plots(vec_df, som, json_path, hc, hb, ht):
 
 
 
-    hexbg_select_dropdown = Select(value="um", 
+    hex_dropdown = Select(value="um", 
                             options = [
                                 ('um','UMatrix'), 
                                 ('tp','Topic Model'), 
@@ -560,11 +544,11 @@ def make_plots(vec_df, som, json_path, hc, hb, ht):
                             max_width=200,
                             sizing_mode='stretch_width',
 
-                            name="hex_select"
+                            name="hex_dropdown"
                             )
 
 
-    hexbg_select_dropdown.js_on_change('value',
+    hex_dropdown.js_on_change('value',
             CustomJS(args=dict(um=um_hex,
                                 um_cb=ub_cb, 
                                 tp=tp_hex,
@@ -579,61 +563,13 @@ def make_plots(vec_df, som, json_path, hc, hb, ht):
                                 hb=hb,
                                 ht=ht
                             ),
-                    code="""
-
-                    console.log(hc,hb)
-
-                    // make everything invisible
-                    um.visible = false
-                    um_cb.visible = false
-                    
-                    tp.visible = false
-                    tp_wedge.visible = false
-                    w_switch.visible = false
-
-                    tb.visible = false
-                    to.visible = false
-                    ts.visible = false
-
-                    rc.visible = false
-                    rc_cb.visible = false
-
-                    // show selected
-                    var selected_hex = cb_obj.value
-
-                    if (selected_hex == 'um') {
-                        um.visible = true
-                        um_cb.visible = true
-                        ht.text = "<h3 style='margin-top:0px'>" + hc.um['title'] + "</h3>"
-                        hb.text = "<p style='margin-bottom:1em'>" + hc.um['body'].join("</p><p style='margin-bottom:1em'>") + "</p>"
-                    } else if (selected_hex == 'tp') {
-                        tp.visible = true
-                        tp_wedge.visible = true
-                        w_switch.visible = true
-                        ht.text = "<h3 style='margin-top:0px'>" + hc.tp['title'] + "</h3>"
-                        hb.text = "<p style='margin-bottom:1em'>" + hc.tp['body'].join("</p><p style='margin-bottom:1em'>") + "</p>"
-
-                    } else if (selected_hex == 'to') {
-                        tb.visible = true
-                        to.visible = true
-                        ts.visible = true
-                        ht.text = "<h3 style='margin-top:0px'>" + hc.to['title'] + "</h3>"
-                        hb.text = "<p style='margin-bottom:1em'>" + hc.to['body'].join("</p><p style='margin-bottom:1em'>") + "</p>"
-                    } else if (selected_hex == 'rc') {
-                        rc.visible = true
-                        rc_cb.visible = true
-                        ht.text = "<h3 style='margin-top:0px'>" + hc.rc['title'] + "</h3>"
-                        hb.text = "<p style='margin-bottom:1em'>" + hc.rc['body'].join("</p><p>") + "</p>"
-                    }
-
-                    
-                    """
+                    code=cb['hex_dropdown']
             )
         )
 
 
 
-    return plot, colorbar_plot, main_source, hexbg_select_dropdown, hex_toggle_switch, wedge_toggle_switch, to_select, codebook_long, highlight_src, highlight_hex
+    return plot, colorbar_plot, main_source, hex_dropdown, hex_toggle_switch, wedge_toggle_switch, to_select, codebook_long, highlight_src, highlight_hex
 
 
 
@@ -665,7 +601,7 @@ def make_plots(vec_df, som, json_path, hc, hb, ht):
 
 
 def make_tables(vec_df, 
-                meta_cols, table_cols_attrs):
+                meta_cols, table_cols_attrs, cb):
 
     placeholder_style = dict({
                           'padding': '1em',
@@ -699,14 +635,12 @@ def make_tables(vec_df,
     node_detail = Div(text=node_detail_text, styles=placeholder_style)
 
 
-    row_select_cb = CALLBACKS['row_select_cb']
-
     table_cds.selected.js_on_change('indices', 
                                     CustomJS(args=dict(
                                                 table_src = table_cds,
                                                 node_div = node_detail
                                                 ),
-                                            code=row_select_cb
+                                            code=cb['row_click']
                                             ))
 
     ## Table attributes

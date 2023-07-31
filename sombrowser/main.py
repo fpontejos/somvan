@@ -28,6 +28,10 @@ import json
 
 ROOT_PATH = os.path.dirname(__file__)
 
+CALLBACKS = get_callbacks(ROOT_PATH)
+
+
+
 DASH_CONFIG = {
 
     'data': {
@@ -155,7 +159,7 @@ meta_df = get_meta()
 
 json_path_ = [ROOT_PATH] + DASH_CONFIG['data']['topics'].split("/")
 json_path = os.path.join(*json_path_)
-plot, colorbar_plot, main_source, hex_select, hits_switch, wedge_toggle_switch, to_select, codebook_long, highlight_src, highlight_hex = make_plots(meta_df, som, json_path, HELP_CONTENTS, help_body, help_title)
+plot, colorbar_plot, main_source, hex_dropdown, hits_switch, wedge_toggle_switch, to_select, codebook_long, highlight_src, highlight_hex = make_plots(meta_df, som, json_path, HELP_CONTENTS, help_body, help_title, CALLBACKS)
 
 
 
@@ -163,7 +167,8 @@ plot, colorbar_plot, main_source, hex_select, hits_switch, wedge_toggle_switch, 
 node_table, table_source, table_view, node_detail = make_tables(
                                             meta_df, 
                                             DASH_CONFIG['details']['table']['meta_cols'], 
-                                            DASH_CONFIG['details']['table']['table_cols_attrs']
+                                            DASH_CONFIG['details']['table']['table_cols_attrs'],
+                                            CALLBACKS
                                             )
 
 bars, bar_plot, bar_view, bar_index, bar_source = make_bars(meta_df, filter_col='Topic')
@@ -187,7 +192,7 @@ main_source.selected.js_on_change('indices',
                                                 edge_src=edge_source,
                                                 main_cds=main_source
                                                 ),
-                                            code=hex_select_cb
+                                            code=CALLBACKS['hex_click']
                                             ))
 
 
@@ -319,7 +324,7 @@ select_options = column(
 curdoc().add_root(select_options) # works
 curdoc().add_root(footer_input) # works
 curdoc().add_root(help_col) # works
-curdoc().add_root(hex_select)
+curdoc().add_root(hex_dropdown)
 
 curdoc().add_root(row(hits_switch, name="hits_switch"))
 curdoc().add_root(wedge_toggle_switch)

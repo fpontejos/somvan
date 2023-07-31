@@ -6,23 +6,19 @@ import colorcet as cc
 from scipy.spatial import KDTree
 from collections import Counter
 
-from sklearn.preprocessing import MinMaxScaler
-
 from bokeh.layouts import row, column
 from bokeh.models import LinearColorMapper
 from bokeh.models import ColorBar, HoverTool, BasicTicker
 from bokeh.models import ColumnDataSource, CDSView, CustomJS
 from bokeh.models import DataTable, TableColumn
-from bokeh.models import Div
-from bokeh.models import TabPanel, Tabs, Switch
+from bokeh.models import Switch
 from bokeh.models import AllIndices, GroupFilter, IndexFilter
 from bokeh.models import Div, Button, Select, TextInput
 from bokeh.palettes import interp_palette
 from bokeh.plotting import figure
-from bokeh.transform import factor_cmap, factor_mark
-from bokeh.models import ColumnDataSource, CDSView, CustomJS, Styles
+from bokeh.transform import factor_cmap
+from bokeh.models import Styles
 from bokeh.events import ButtonClick
-
 
 from modules.constants import *
 

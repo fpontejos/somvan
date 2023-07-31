@@ -1,54 +1,31 @@
-from bokeh.plotting import figure
-from bokeh.models import ColumnDataSource, CDSView, CustomJS
-from bokeh.models import DataTable, TableColumn
-from bokeh.transform import factor_cmap, factor_mark
-from bokeh.models import Div, Button, Select, TextInput
-from bokeh.models import TabPanel, Tabs
-from bokeh.models import ColumnDataSource, CDSView, CustomJS, Styles
-from bokeh.events import ButtonClick
-from sentence_transformers import SentenceTransformer
-
-from bokeh.models import Div
-
-from bokeh.models import AllIndices, GroupFilter, IndexFilter
-
 import os
-import pickle
+from scipy.spatial import KDTree
+
+
+from bokeh.models import CustomJS
+from bokeh.models import Div
+from bokeh.models import TabPanel, Tabs
+from bokeh.models import Styles
+from bokeh.models import AllIndices, IndexFilter
+
 from bokeh.layouts import row, column
-import numpy as np
-import pandas as pd
+
 from bokeh.io import curdoc
 
-from modules.visualize import *
-from modules.constants import *
-from modules.setup import * 
-from modules.plot_components.graph import *
+from modules.visualize import get_callbacks, get_help, get_query_buttons
+from modules.visualize import make_plots, make_tables, make_bars
 
-import colorcet as cc 
-import json
+from modules.constants import DASH_CONFIG, HELP_BODY_CONTENTS, HELP_BODY_TITLE, PLOT_HEIGHT, PLOT_WIDTH
+from modules.setup import get_meta, get_pickled_som, get_transformer
+from modules.plot_components.graph import make_graph_plot, init_graph
 
 ROOT_PATH = os.path.dirname(__file__)
 
 CALLBACKS = get_callbacks(ROOT_PATH)
 
 
-# def get_bmu_byrow(vec_df, som):
-#     bmu_list = []
-#     p_ = som.get_weights().shape[2]
-#     mn = som.get_weights().shape[:2]
-    
-#     vec_vals = vec_df.iloc[:,:p_].values
-
-#     for row in vec_vals:
-#         wx, wy = som.winner(row)
-#         bmu_list.append(np.ravel_multi_index((wx,wy), mn ) )
-#     return pd.Series(bmu_list, name='bmu')
-
-
-
-
 ################################
-## Setup
+# Setup
 ################################
 
 som = get_pickled_som(DASH_CONFIG['data']['som'], ROOT_PATH)
@@ -65,45 +42,50 @@ json_path = os.path.join(*json_path_)
 
 
 ################################
-## Make main plots
+# Make main plots
 ################################
 
-plots_, main_source, codebook_long, dropdowns_, switches_, highlights_ = make_plots(meta_df, som, json_path, help_, CALLBACKS)
+plots_, main_source, codebook_long, dropdowns_, switches_, highlights_ = make_plots(meta_df, 
+                                    som, 
+                                    json_path, 
+                                    help_, 
+                                    CALLBACKS)
 
 
 ################################
-## Make tables
+# Make tables
 ################################
 
 node_table, table_source, table_view, node_detail = make_tables(
-                                            meta_df, 
-                                            DASH_CONFIG['details']['table']['meta_cols'], 
-                                            DASH_CONFIG['details']['table']['table_cols_attrs'],
-                                            CALLBACKS
-                                            )
+                        meta_df, 
+                        DASH_CONFIG['details']['table']['meta_cols'], 
+                        DASH_CONFIG['details']['table']['table_cols_attrs'],
+                        CALLBACKS
+                        )
 
 ################################
-## Make bar plots
+# Make bar plots
 ################################
 
-bars, bar_plot, bar_view, bar_index, bar_source = make_bars(meta_df, filter_col='Topic')
+bars, bar_plot, bar_view, bar_index, bar_source = make_bars(meta_df, 
+                        filter_col='Topic')
 
 
 ################################
-## Initialize graph
+# Initialize graph
 ################################
 
 G, Gpos, graph_plot, graph_cmap = init_graph(som, meta_df)
 
 ################################
-## Make graph plot
+# Make graph plot
 ################################
 
 graph_plot, edge_source = make_graph_plot(G, Gpos, graph_plot, main_source, graph_cmap)
 
 
 ################################
-## Add main callback
+# Add main callback
 ################################
 
 main_source.selected.js_on_change('indices', 
@@ -126,7 +108,7 @@ main_source.selected.js_on_change('indices',
 
 
 #######################
-## Get query buttons
+# Get query buttons
 #######################
 
 
@@ -157,7 +139,7 @@ footer_input = column(
 
 
 #######################
-## Arrange layout
+# Arrange layout
 #######################
 
 

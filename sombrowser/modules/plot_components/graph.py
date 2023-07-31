@@ -4,12 +4,12 @@ from bokeh.plotting import figure
 
 
 from bokeh.models import GraphRenderer
-from bokeh.models import Circle, ColumnDataSource, MultiLine, NodesAndLinkedEdges, LabelSet
-from bokeh.models import GraphRenderer, StaticLayoutProvider
-from bokeh.models import ColumnDataSource
-from bokeh.models import LinearColorMapper, LabelSet
+from bokeh.models import Circle, ColumnDataSource, MultiLine, LabelSet
+from bokeh.models import StaticLayoutProvider
+from bokeh.models import NodesAndLinkedEdges
+from bokeh.models import LinearColorMapper
 
-from modules.plot_components.utils.interstitials import * 
+from modules.plot_components.utils.interstitials import *
 
 from modules.constants import *
 from collections import Counter
@@ -27,11 +27,6 @@ def init_graph(som, meta_df, palette=palette):
     n = weights.shape[1]
     p = weights.shape[-1]   # number of inputs
     
-    # hits = som.activation_response(vec_vals)
-
-    # hits_long       = hitsmatrix.reshape(m*n)
-    # hits_pct        = hitsmatrix.reshape(m*n) / hitsmatrix.max()
-
 
     bmu_counter = Counter(meta_df['bmu'])
     hits = np.zeros((m,n))
@@ -40,7 +35,6 @@ def init_graph(som, meta_df, palette=palette):
         u = np.unravel_index(i,(m,n))
         hits[u] = bmu_counter[i]
 
-    hits_long       = hits.reshape(m*n)
     hits_pct        = hits.reshape(m*n) / hits.max()
 
 

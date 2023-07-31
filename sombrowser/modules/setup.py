@@ -1,19 +1,18 @@
 import os
-import pandas as pd 
-import pickle 
+import pandas as pd
+import pickle
 from sentence_transformers import SentenceTransformer
 
+
 def get_meta(meta_path, rp):
-    
+
     meta_path_ = [rp] + meta_path.split("/")
 
     meta_df = pd.read_csv(os.path.join(*meta_path_))
-    
+
     print('load from csv:', meta_path)
-        
+
     return meta_df
-
-
 
 
 def get_pickled_som(pickle_path, rp):

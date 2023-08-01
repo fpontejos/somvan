@@ -2,7 +2,7 @@ import os
 
 from bokeh.io import curdoc
 from bokeh.layouts import column, row
-from bokeh.models import AllIndices, CustomJS, Div, IndexFilter, Styles, TabPanel, Tabs
+from bokeh.models import AllIndices, CustomJS, Div, IndexFilter, Styles, TabPanel, Tabs, HelpButton, Tooltip, Button
 from modules.constants import (
     DASH_CONFIG,
     HELP_BODY_CONTENTS,
@@ -123,7 +123,7 @@ run_query_button, clear_query_button, query_input = get_query_buttons(
 )
 
 
-footer_input = column(
+panel_input = column(
     Div(text="""<h3 style="margin-top:0px">Enter Query</h3>"""),
     query_input,
     row(
@@ -132,7 +132,9 @@ footer_input = column(
         sizing_mode="stretch_width",
         styles=Styles(justify_content="space-between"),
     ),
-    name="footer_input",
+    min_width=200,
+    sizing_mode="stretch_width",
+    name="panel_input",
 )
 
 
@@ -165,11 +167,24 @@ select_options = column(
     name="select_options",
 )
 
+# help_button_style="""
+# .bk-btn {
+#     border: 0px;
+#     background-color: transparent;
+#     padding: .25em;
+# }
+# """
+# hex_drop_tooltip=Tooltip(content="Type your query here", position="bottom")
+# hex_drop_help = HelpButton(name='hex_drop_help', 
+#                        stylesheets=[help_button_style],
+#                        tooltip=hex_drop_tooltip, 
+#                        )
+
 curdoc().add_root(select_options)
-curdoc().add_root(footer_input)
+curdoc().add_root(panel_input)
 curdoc().add_root(help_col)
 curdoc().add_root(dropdowns_["hex_dropdown"])
-
+# curdoc().add_root(hex_drop_help)
 curdoc().add_root(row(switches_["hex_toggle_switch"], name="hits_switch"))
 curdoc().add_root(switches_["wedge_toggle_switch"])
 

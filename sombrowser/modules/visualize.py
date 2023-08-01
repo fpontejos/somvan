@@ -10,6 +10,7 @@ from bokeh.models import (AllIndices, BasicTicker, Button, CDSView, ColorBar,
                           ColumnDataSource, CustomJS, DataTable, Div,
                           GroupFilter, HoverTool, IndexFilter,
                           LinearColorMapper, Select, Styles, Switch,
+                          Tooltip, HelpButton,
                           TableColumn, TextInput)
 from bokeh.palettes import interp_palette
 from bokeh.plotting import figure
@@ -346,12 +347,13 @@ def make_plot_topoverlay(plot, vec_df, m, n, topic_labels, main_source, cds_dict
         visible=False,
         **default_hex_scatter_args
     )
+    
 
     to_dropdown = Select(
         value="x",
         options=[("x", "Select Topic")] + topic_input_label,
         visible=False,
-        max_width=200,
+        min_width=200,
         sizing_mode="stretch_width",
         styles=dict({"min-width": "120px"}),
         name="to_dropdown",
@@ -501,7 +503,7 @@ def make_plots(vec_df, som, json_path, help_, cb):
                 "min-width": "120px",
             }
         ),
-        max_width=200,
+        min_width=200,
         sizing_mode="stretch_width",
         name="hex_dropdown",
     )
@@ -717,7 +719,10 @@ def get_query_buttons(transformer, codebook_tree, highlights_, m, n):
     run_query_button.on_event(ButtonClick, calculate_query)
     clear_query_button.on_event(ButtonClick, clear_query)
 
-    query_input = TextInput(placeholder="Search Query", width=200)
+    query_input = TextInput(placeholder="Search Query", 
+                            min_width=200,
+                            sizing_mode="stretch_width",
+    )
 
     return run_query_button, clear_query_button, query_input
 

@@ -57,15 +57,15 @@ Interactive SOM
         opacity: 1;
         transition: 0.3s;
     }
-    .footer_item.gh_link {
+    .panel_item.gh_link {
         flex: 1 0 150px;
         margin-top: 1em;
         font-family: var(--base-font);
     }
-    .footer_item.gh_link img {
+    .panel_item.gh_link img {
         margin-right: .5em;
     }
-    .footer_item.gh_link div {
+    .panel_item.gh_link div {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -77,21 +77,25 @@ Interactive SOM
 
 
     
-    .main_wrapper, .footer_wrapper{
+    .main_wrapper, .panel_wrapper{
         display: flex;
         flex-direction: row;
         padding: 2em
     }
-    .footer_wrapper {
+    .panel_wrapper {
         background-color: #f4f4f4;
         padding: .5em 1em 1em 1em;
     }
 
-    .main_item, .footer_item{
+    .main_item, .panel_item{
         flex: 1 0 auto;
     }
 
-    .footer_item.help_text_wrapper {
+    .panel_item {
+        margin-right:4em;
+    }
+
+    .panel_item.help_text_wrapper {
         /* border: 1px solid red; */
         /* flex: 2 0 auto; */
     }
@@ -107,6 +111,22 @@ Interactive SOM
         box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
         /* box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset; */
     }
+
+    .panel_element {
+        display: flex;
+        flex-direction: row;
+    }
+    .panel_element_help {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    .panel_element_item {
+        flex: 1 0 auto;
+    }
+
+
   </style>
 
 {% endblock %}
@@ -125,19 +145,26 @@ Interactive SOM
             </a>  -->
         </div>
     </div>
-    <div class="footer_wrapper">
-        <div class="footer_item">
-            {{embed(roots.footer_input) }}
+    <div class="panel_wrapper">
+        <div class="panel_item">
+            <div class="panel_element">
+                <div class="panel_element_item">{{embed(roots.panel_input) }}</div>
+                <!-- <div class="panel_element_help">  embed(roots.hex_drop_help)  </div> -->
+            </div>
         </div>        
-        <div class="footer_item">
-            {{embed(roots.select_options) }}
-            {{embed(roots.hex_dropdown)}}
+        <div class="panel_item">
+            <div class="panel_element">
+                <div class="panel_element_item">{{embed(roots.select_options) }}</div>
+            </div>
+            <div class="panel_element">
+                <div class="panel_element_item">{{embed(roots.hex_dropdown)}}</div>
+            </div>
             {{embed(roots.to_dropdown)}}
             <hr style="width:50%; margin:.5em auto .5em 0">
             {{embed(roots.hits_switch)}}
             {{embed(roots.wedge_toggle_switch)}}
         </div>
-        <div class="footer_item help_text_wrapper">
+        <div class="panel_item help_text_wrapper">
             {{embed(roots.help_text) }}
         </div>        
 

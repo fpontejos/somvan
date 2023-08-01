@@ -10,13 +10,12 @@ from bokeh.models import (AllIndices, BasicTicker, Button, CDSView, ColorBar,
                           ColumnDataSource, CustomJS, DataTable, Div,
                           GroupFilter, HoverTool, IndexFilter,
                           LinearColorMapper, Select, Styles, Switch,
-                          Tooltip, HelpButton,
                           TableColumn, TextInput)
 from bokeh.palettes import interp_palette
 from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
 from modules.constants import (BUTTON_STYLES, CONTRAST_COLOR1, PLOT_HEIGHT,
-                               PLOT_WIDTH, SOM_SCALING, TOPNN_K)
+                               HELP_CONTENTS, PLOT_WIDTH, SOM_SCALING, TOPNN_K)
 from scipy.spatial import KDTree
 
 default_hex_scatter_args = dict(
@@ -522,7 +521,7 @@ def make_plots(vec_df, som, json_path, help_, cb):
                 ts=to_dropdown,
                 rc=recency_hex,
                 rc_cb=rc_colorbar,
-                hc=help_["contents"],
+                hc=HELP_CONTENTS,
                 hb=help_["body"],
                 ht=help_["title"],
             ),

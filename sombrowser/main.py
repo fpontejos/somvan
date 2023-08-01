@@ -2,7 +2,7 @@ import os
 
 from bokeh.io import curdoc
 from bokeh.layouts import column, row
-from bokeh.models import AllIndices, CustomJS, Div, IndexFilter, Styles, TabPanel, Tabs, HelpButton, Tooltip, Button
+from bokeh.models import AllIndices, CustomJS, Div, IndexFilter, Styles, TabPanel, Tabs
 from modules.constants import (
     DASH_CONFIG,
     HELP_BODY_CONTENTS,

@@ -13,8 +13,13 @@ from bokeh.models import (
     StaticLayoutProvider,
 )
 from bokeh.plotting import figure
-from modules.constants import *
-from modules.plot_components.utils.interstitials import *
+
+from modules.constants import (
+    PLOT_HEIGHT,
+    SOM_SCALING,
+    CONTRAST_COLOR1,
+)
+from modules.plot_components.utils.interstitials import get_neighbors
 
 palette = "Viridis256"
 
@@ -25,7 +30,7 @@ def init_graph(som, meta_df, palette=palette):
 
     m = weights.shape[0]
     n = weights.shape[1]
-    p = weights.shape[-1]  # number of inputs
+    weights.shape[-1]  # number of inputs
 
     bmu_counter = Counter(meta_df["bmu"])
     hits = np.zeros((m, n))
@@ -34,7 +39,7 @@ def init_graph(som, meta_df, palette=palette):
         u = np.unravel_index(i, (m, n))
         hits[u] = bmu_counter[i]
 
-    hits_pct = hits.reshape(m * n) / hits.max()
+    hits.reshape(m * n) / hits.max()
 
     graph_plot = figure(
         title="Graph layout",
@@ -67,7 +72,7 @@ def get_edges(weights, hits_matrix, gx):
     im_n = (weights.shape[1] * 2) - 1
 
     interstitial_matrix = np.full((im_m, im_n), np.nan)
-    interstitial_dirs = np.full((im_m, im_n), np.nan)
+    np.full((im_m, im_n), np.nan)
     s = weights.shape[:2]
 
     interstitial_max = 0
@@ -171,11 +176,11 @@ def make_graph_plot(G, Gpos, plot, node_cds, cmap):
     # flipped_pos = {node: (y,x) for (node, (x,y)) in Gpos.items()}
     flipped_pos = Gpos  # {node: (y,x) for (node, (x,y)) in Gpos.items()}
     flip = True
-    if flip == True:
+    if flip is True:
         flipped_pos = {node: (y, x) for (node, (x, y)) in Gpos.items()}
 
     # list the nodes and initialize a plot
-    N = len(flipped_pos)
+    len(flipped_pos)
 
     labels_pos = [get_midpt(flipped_pos, i[0], i[1]) for i in G.edges]
 
@@ -206,8 +211,8 @@ def make_graph_plot(G, Gpos, plot, node_cds, cmap):
         )
     )
 
-    labels_cds = ColumnDataSource(data=dict(x=[], y=[], dist=[]))
-    labels_empty = ColumnDataSource(data=dict(x=[], y=[], dist=[]))
+    ColumnDataSource(data=dict(x=[], y=[], dist=[]))
+    ColumnDataSource(data=dict(x=[], y=[], dist=[]))
 
     graph = GraphRenderer()
 
@@ -271,10 +276,10 @@ def make_graph_plot(G, Gpos, plot, node_cds, cmap):
     # render the graph
     plot.renderers.append(graph)
     plot.toolbar.logo = None
-    labels_cds = ColumnDataSource(data=dict(x=[], y=[], dist=[]))
-    labels_empty = ColumnDataSource(data=dict(x=[], y=[], dist=[]))
+    ColumnDataSource(data=dict(x=[], y=[], dist=[]))
+    ColumnDataSource(data=dict(x=[], y=[], dist=[]))
 
-    labels = LabelSet(
+    LabelSet(
         x="mdpt_x",
         y="mdpt_y",
         text="edge_alpha",

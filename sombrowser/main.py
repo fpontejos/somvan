@@ -9,11 +9,12 @@ from modules.constants import (
     HELP_BODY_TITLE,
     PLOT_HEIGHT,
     PLOT_WIDTH,
+    get_callbacks,
 )
+
 from modules.plot_components.graph import init_graph, make_graph_plot
 from modules.setup import get_meta, get_pickled_som, get_transformer
 from modules.visualize import (
-    get_callbacks,
     get_help,
     get_query_buttons,
     make_bars,

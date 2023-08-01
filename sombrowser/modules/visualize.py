@@ -1,26 +1,22 @@
-import numpy as np
-import pandas as pd
 import json
-import colorcet as cc
-
-from scipy.spatial import KDTree
 from collections import Counter
 
-from bokeh.layouts import row, column
-from bokeh.models import LinearColorMapper
-from bokeh.models import ColorBar, HoverTool, BasicTicker
-from bokeh.models import ColumnDataSource, CDSView, CustomJS
-from bokeh.models import DataTable, TableColumn
-from bokeh.models import Switch
-from bokeh.models import AllIndices, GroupFilter, IndexFilter
-from bokeh.models import Div, Button, Select, TextInput
+import colorcet as cc
+import numpy as np
+import pandas as pd
+from bokeh.events import ButtonClick
+from bokeh.layouts import column, row
+from bokeh.models import (AllIndices, BasicTicker, Button, CDSView, ColorBar,
+                          ColumnDataSource, CustomJS, DataTable, Div,
+                          GroupFilter, HoverTool, IndexFilter,
+                          LinearColorMapper, Select, Styles, Switch,
+                          TableColumn, TextInput)
 from bokeh.palettes import interp_palette
 from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
-from bokeh.models import Styles
-from bokeh.events import ButtonClick
-
-from modules.constants import *
+from modules.constants import (BUTTON_STYLES, CONTRAST_COLOR1, PLOT_HEIGHT,
+                               PLOT_WIDTH, SOM_SCALING, TOPNN_K)
+from scipy.spatial import KDTree
 
 default_hex_scatter_args = dict(
     marker="hex",
@@ -105,13 +101,13 @@ def get_cds(som, meta_df):
         u = np.unravel_index(i, (m, n))
         winmap[u] = meta_df.loc[meta_df["bmu"] == i].index.tolist()
 
-    winmap_long = {np.ravel_multi_index(i, (m, n)): winmap[i] for i in winmap}
+    {np.ravel_multi_index(i, (m, n)): winmap[i] for i in winmap}
 
     # winmap = som.win_map(vec_vals, return_indices=True)
     # winmap_long = {np.ravel_multi_index(i, (m, n)): winmap[i] for i in winmap}
 
     codebook_long = weights.reshape((m * n, p))
-    codebook_tree = KDTree(codebook_long)
+    KDTree(codebook_long)
 
     coords = ["{}".format(np.unravel_index(i, weights.shape[:2])) for i in range(m * n)]
 
@@ -324,7 +320,6 @@ def make_plot_topoverlay(plot, vec_df, m, n, topic_labels, main_source, cds_dict
 
     toc1 = "#90DFD6"
     toc2 = "#86615C"
-    toc3 = "#DFF6F4"
 
     to_bg_hex = plot.scatter(
         source=main_source,
@@ -563,10 +558,10 @@ def make_tables(vec_df, meta_cols, table_cols_attrs, cb):
         for i in table_cols_attrs
     ]
 
-    table_index = IndexFilter(indices=[])
+    IndexFilter(indices=[])
     table_all = AllIndices()
-    table_none = IndexFilter(indices=[])
-    table_group = GroupFilter(column_name="bmu")
+    IndexFilter(indices=[])
+    GroupFilter(column_name="bmu")
 
     table_view = CDSView(filter=table_all)
     node_table = DataTable(
@@ -633,11 +628,11 @@ def make_bars(vec_df, filter_col="user"):
 
     ## Placeholders for index / view values and CDS filters
     index_0 = bar_df_long.loc[bar_df_long["bmu"] == "0", :].index.to_list()
-    bar_df_long_src = ColumnDataSource(bar_df_long)
+    ColumnDataSource(bar_df_long)
     long_index = IndexFilter(indices=index_0)
-    long_view = CDSView(filter=long_index)
+    CDSView(filter=long_index)
 
-    bar_df_idx = bar_df_long.loc[bar_df_long["bmu"] == "0"].index.tolist()
+    bar_df_long.loc[bar_df_long["bmu"] == "0"].index.tolist()
 
     ## Get top 10 users by BR count to display bar chart when no node is selected
     top10_users_bar = (

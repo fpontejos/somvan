@@ -52,28 +52,36 @@ HELP_CONTENTS = {
     "um": {
         "title": "UMatrix View",
         "body": [
-            "The color of the hexagons denote the average distance of each node to its neighbors.",
-            "Darker nodes are closer to their neighbors, while yellow nodes are farther away.",
+            """The color of the hexagons denote the average distance 
+            of each node to its neighbors.""",
+            """Darker nodes are closer to their neighbors, 
+            while yellow nodes are farther away.""",
         ],
     },
     "tp": {
         "title": "Topic Model View",
         "body": [
-            "Each node is assigned the color of the most frequently occuring topic abong the documents in the node.",
-            "The wedges in the middle denotes the percentage of documents in the node that belong to this topic. Full circle wedges mean all the documents in that node belong to the same topic.",
+            """Each node is assigned the color of the most frequently occuring topic 
+            among the documents in the node.""",
+            """The wedges in the middle denotes the percentage of documents in the node 
+            that belong to this topic. Full circle wedges mean all the documents 
+            in that node belong to the same topic.""",
         ],
     },
     "to": {
         "title": "Topic Overlay View",
         "body": [
-            "Choosing a specific topic from the selection highlights the nodes that contain documents with that topic.",
-            "Darker nodes correspond to a higher percentage of documents in the node containing the topic.",
+            """Choosing a specific topic from the selection highlights the nodes 
+            that contain documents with that topic.""",
+            """Darker nodes correspond to a higher percentage of documents in the node 
+            containing the topic.""",
         ],
     },
     "rc": {
         "title": "Temporal Overlay",
         "body": [
-            "The color of the nodes correspond to the average recency of its documents.",
+            """The color of the nodes correspond 
+            to the average recency of its documents.""",
             "Red nodes are on average more recent than blue nodes.",
         ],
     },
